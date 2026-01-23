@@ -4,7 +4,6 @@ import React from 'react';
 import { GameProvider, useGame } from '@/context/GameContext';
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
-import ParticlesOverlay from '../components/ParticlesOverlay';
 import { GameView, ShopView } from '@/components/GameViews';
 
 const ContentRouter: React.FC = () => {
@@ -36,7 +35,6 @@ export default function Home() {
 
                 <main className="flex-grow relative w-full max-w-md mx-auto overflow-hidden">
                     <ContentRouter />
-                    <ParticlesOverlay />
                 </main>
 
                 <Navbar />
