@@ -1,42 +1,95 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Import des polices Google */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Pirata+One&family=VT323&display=swap');
+
+@import "tailwindcss";
+
+/* Classes utilitaires pour les polices */
+.font-pirate {
+  font-family: 'Pirata One', cursive;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.font-ui {
+  font-family: 'Cinzel', serif;
+}
+
+.font-pixel {
+  font-family: 'VT323', monospace;
+}
+
+/* Animations personnalisées */
+@keyframes waveMove {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
   }
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
+@keyframes pulseGold {
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+  0%,
+  100% {
+    filter: brightness(1);
   }
+
+  50% {
+    filter: brightness(1.3) drop-shadow(0 0 5px #fbbf24);
+  }
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-80px) scale(1.5);
+  }
+}
+
+.animate-float-up {
+  animation: floatUp 0.8s ease-out forwards;
+}
+
+.animate-wave-1 {
+  animation: waveMove 20s linear infinite;
+}
+
+.animate-wave-2 {
+  animation: waveMove 15s linear infinite reverse;
+}
+
+.animate-wave-3 {
+  animation: waveMove 10s linear infinite;
+}
+
+.animate-pulse-gold {
+  animation: pulseGold 2s infinite;
+}
+
+/* Scrollbar personnalisée style Pirate */
+.scroller::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+  background: #8d7e66;
+  border-radius: 10px;
+}
+
+.scroller::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Utilitaires pour le mobile */
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
 }
