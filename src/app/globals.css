@@ -1,11 +1,48 @@
-/* Import des polices Google */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Pirata+One&family=VT323&display=swap');
+
+@font-face {
+  font-family: 'bloodcrow';
+  src: url('/font/bloodcrow.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TIMESS';
+  src: url('/font/TIMESS__.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 @import "tailwindcss";
 
-/* Classes utilitaires pour les polices */
-.font-pirate {
-  font-family: 'Pirata One', cursive;
+:root {
+  --rarity-common: #CACACA;
+  --rarity-rare: #9AC8EB;
+  --rarity-epic: #9F8DC3;
+  --rarity-legendary: #FFEFA7;
+  --theme-title: #242423;
+  --theme-price: #CF4146;
+  --theme-shop-bg: #1F1F1F;
+  --theme-light: #FAFAFA;
+}
+
+
+.font-pirate,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'bloodcrow', cursive;
+}
+
+body {
+  font-family: 'TIMESS', serif;
+}
+
+.font-times {
+  font-family: 'TIMESS', serif;
 }
 
 .font-ui {
@@ -16,7 +53,7 @@
   font-family: 'VT323', monospace;
 }
 
-/* Animations personnalisées */
+
 @keyframes waveMove {
   0% {
     transform: translateX(0);
@@ -35,7 +72,7 @@
   }
 
   50% {
-    filter: brightness(1.3) drop-shadow(0 0 5px #fbbf24);
+    filter: brightness(1.3);
   }
 }
 
@@ -71,25 +108,97 @@
   animation: pulseGold 2s infinite;
 }
 
-/* Scrollbar personnalisée style Pirate */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+
 .scroller::-webkit-scrollbar {
   width: 6px;
 }
 
 .scroller::-webkit-scrollbar-thumb {
-  background: #8d7e66;
+  background: #2a2a2a;
   border-radius: 10px;
 }
 
 .scroller::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: transparent;
 }
 
-/* Utilitaires pour le mobile */
+
 .pt-safe {
   padding-top: env(safe-area-inset-top);
 }
 
 .pb-safe {
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+@keyframes flyOut {
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(var(--s)) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
+.animate-fly-out {
+  animation: flyOut 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+
+@keyframes loader-flash {
+
+  0%,
+  100% {
+    opacity: 0.08;
+  }
+
+  50% {
+    opacity: 1;
+    background-color: #ffffff;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+  }
+}
+
+@keyframes loader-breathe {
+
+  0%,
+  100% {
+    opacity: 0.25;
+    letter-spacing: 8px;
+  }
+
+  50% {
+    opacity: 1;
+    letter-spacing: 13px;
+  }
+}
+
+.loader-segment {
+  animation: loader-flash 1.5s ease-in-out infinite;
+}
+
+.loader-text {
+  animation: loader-breathe 2.5s ease-in-out infinite;
 }

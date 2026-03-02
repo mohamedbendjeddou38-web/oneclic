@@ -1,0 +1,28 @@
+{
+    "name": "OneClic – Jeu de Clicker Pirate",
+    "short_name": "OneClic",
+    "description": "Jeu de clicker pirate gratuit en ligne. Cliquez, pillez et devenez le roi des pirates !",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#000000",
+    "orientation": "portrait",
+    "lang": "fr",
+    "categories": [
+        "games",
+        "entertainment"
+    ],
+    "icons": [
+        {
+            "src": "/iconduHeader.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/iconduHeader.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

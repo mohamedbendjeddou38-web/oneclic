@@ -1,48 +1,82 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
+import Image from 'next/image';
 import { useGame } from '@/context/GameContext';
 import { CONFIG, getCost } from '@/data/config';
+import { Menu, ScrollText } from 'lucide-react';
+import VoletClassement from './VoletClassement';
+import ModalQuetes from './ModalQuetes';
 
 const Navbar: React.FC = () => {
-    const { view, setView, gold, inventory } = useGame();
+    const { view, setView, gold, inventory, token } = useGame();
+    const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+    const [isQuetesOpen, setIsQuetesOpen] = useState(false);
+
+    if (!token) return null;
 
     const canAffordAny = [...CONFIG.clickUpgrades, ...CONFIG.autoUpgrades].some(i => {
-        return gold >= getCost(i.baseCost, inventory[i.id] || 0);
+        return gold >= getCost(i, inventory[i.id] || 0);
     });
 
     return (
-        <nav className="flex-none z-50 px-6 pb-6 pt-2">
-            <div className="backdrop-blur-md border-2 border-[#a1887f]/30 shadow-lg flex overflow-hidden relative max-w-md mx-auto">
-                <div className="absolute inset-0 bg-white/5 opacity-50"></div>
+        <>
+            <nav onPointerDown={(e) => e.stopPropagation()} className="flex-none z-[100] px-6 pb-2">
+                <div className="backdrop-blur-md border-2 border-white/20 bg-black/40 shadow-xl flex overflow-hidden relative max-w-lg mx-auto items-center rounded-2xl">
 
-                <button
-                    onClick={() => setView('game')}
-                    className={`flex-1 flex py-2 flex-col items-center justify-start relative transition-colors ${view === 'game' ? 'bg-black/20' : ''}`}
-                >
-                    <img
-                        src="/iconNavire.png"
-                        alt="Navire"
-                        className={`w-20 h-20 transition-all ${view === 'game' ? 'opacity-100 drop-shadow-md' : 'opacity-50 grayscale'}`}
-                    />
-                    <span className={`text-[11px]  mt-1.2 tracking-widest uppercase ${view === 'game' ? 'text-white' : 'text-[#d4c5a3]/60 '}`}>Navire</span>
-                </button>
 
-                <div className="w-[2px] bg-[#a1887f]/20 my-2"></div>
+                    <button
+                        onClick={() => setView('game')}
+                        className={`flex-1 flex py-3 flex-col items-center justify-center relative transition-all ${view === 'game' ? 'bg-white/10' : 'hover:bg-white/5'}`}
+                    >
+                        <Image
+                            src="/iconNavire.png"
+                            alt="Navire"
+                            width={50}
+                            height={50}
+                            className={`w-10 h-10 transition-all ${view === 'game' ? 'opacity-100 scale-110' : 'opacity-40 grayscale'}`}
+                        />
+                        <span className={`text-[9px] mt-1 tracking-[0.2em] font-black uppercase ${view === 'game' ? 'text-white' : 'text-white/30'}`}>Navire</span>
+                    </button>
 
-                <button
-                    onClick={() => setView('shop')}
-                    className={`flex-1 py-2 flex flex-col items-center justify-start relative transition-colors ${view === 'shop' ? 'bg-black/20' : ''}`}
-                >
-                    {canAffordAny && <div className="absolute top-3 right-1/3 w-3 h-3 bg-red-700 border-2 border-white rounded-full animate-bounce"></div>}
-                    <img
-                        src="/iconMarché.png"
-                        alt="Marché"
-                        className={`w-20 h-20 transition-all ${view === 'shop' ? 'opacity-100 drop-shadow-md' : 'opacity-50 grayscale'}`}
-                    />
-                    <span className={`text-[11px]  mt-1.2 tracking-widest uppercase ${view === 'shop' ? 'text-white' : 'text-[#d4c5a3]/60'}`}>Marché</span>
-                </button>
-            </div>
-        </nav>
+
+                    <button
+                        onClick={() => setView('shop')}
+                        className={`flex-1 flex py-3 flex-col items-center justify-center relative transition-all ${view === 'shop' ? 'bg-white/10' : 'hover:bg-white/5'}`}
+                    >
+                        {canAffordAny && <div className="absolute top-2 right-1/4 w-2.5 h-2.5 bg-red-600 border-2 border-white rounded-full animate-bounce"></div>}
+                        <Image
+                            src="/iconMarché.png"
+                            alt="Marché"
+                            width={50}
+                            height={50}
+                            className={`w-10 h-10 transition-all ${view === 'shop' ? 'opacity-100 scale-110' : 'opacity-40 grayscale'}`}
+                        />
+                        <span className={`text-[9px] mt-1 tracking-[0.2em] font-black uppercase ${view === 'shop' ? 'text-white' : 'text-white/30'}`}>Marché</span>
+                    </button>
+
+
+                    <button
+                        onClick={() => setIsQuetesOpen(true)}
+                        className="flex-1 flex py-3 flex-col items-center justify-center relative transition-all hover:bg-white/5 border-l border-white/10"
+                    >
+                        <ScrollText size={30} strokeWidth={1.5} className="text-white/40 mb-1" />
+                        <span className="text-[9px] mt-2 tracking-[0.2em] font-black uppercase text-white/30">Quêtes</span>
+                    </button>
+
+
+                    <button
+                        onClick={() => setIsLeaderboardOpen(true)}
+                        className="p-4 text-white/50 hover:text-white transition-colors bg-white/5 border-l border-white/10 group"
+                        title="Classement"
+                    >
+                        <Menu size={24} className="group-hover:scale-110 transition-transform" />
+                    </button>
+                </div>
+            </nav>
+
+            <VoletClassement isOpen={isLeaderboardOpen} onClose={() => setIsLeaderboardOpen(false)} />
+            <ModalQuetes isOpen={isQuetesOpen} onClose={() => setIsQuetesOpen(false)} />
+        </>
     );
 };
 

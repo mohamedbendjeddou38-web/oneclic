@@ -5,16 +5,19 @@ export interface UpgradeItem {
     name: string;
     baseCost: number;
     basePower: number;
-    icon: LucideIcon;
+    icon?: LucideIcon;
     desc: string;
     costMultiplier?: number;
     image?: string;
     activeIcon?: string;
     skillConfig?: {
-        duration: number; // seconds
-        cooldown: number; // seconds
+        duration: number;
+        cooldown: number;
         type: 'buff_gps' | 'buff_click';
     };
+    rarity?: Rarity;
+    currency?: 'gold' | 'pa';
+    priceLabel?: string;
 }
 
 export type Rarity = 'common' | 'rare' | 'epic' | 'legendary';
@@ -23,20 +26,24 @@ export interface SkinItem {
     id: string;
     name: string;
     cost: number;
-    icon: LucideIcon;
+    icon?: LucideIcon;
     colors: string;
     border: string;
     image?: string;
-    rarity?: Rarity; // Optional for compatibility, but used in drop logic
+    rarity?: Rarity;
+    currency?: 'gold' | 'pa';
+    priceLabel?: string;
 }
 
 export interface BackgroundItem {
     id: string;
     name: string;
     cost: number;
-    css?: string; // Made optional as we might rely on image now
-    image: string; // Made required or optional, let's say required for new ones but we'll stick to string
+    css?: string;
+    image: string;
     rarity?: Rarity;
+    currency?: 'gold' | 'pa';
+    priceLabel?: string;
 }
 
 export interface MysteryBoxItem {
@@ -44,7 +51,8 @@ export interface MysteryBoxItem {
     name: string;
     cost: number;
     description: string;
-    icon: LucideIcon;
+    icon?: LucideIcon;
+    image?: string;
     dropRates: {
         common: number;
         rare: number;
@@ -77,21 +85,63 @@ export interface ParticleType {
     val: number;
 }
 
+export interface LeaderboardEntry {
+    name: string;
+    totalGold: number;
+}
+
+export interface LeaderboardData {
+    leaderboard: LeaderboardEntry[];
+    userRank: number | null;
+    userStats: LeaderboardEntry | null;
+    nextUpdate: number;
+}
+
+export interface QuestType {
+    id: string;
+    title: string;
+    description: string;
+    rewardPA: number;
+
+    condition: (state: {
+        totalGold: number;
+        inventory: InventoryType;
+        unlockedCosmetics: string[];
+    }) => boolean;
+}
+
 export interface GameContextType {
+    token: string | null;
+    uid: string | null;
     gold: number;
+    totalGold: number;
+    ancientCoins: number;
+    completedQuests: string[];
+    trackedQuests: string[];
+    toggleTrackQuest: (questId: string) => void;
     inventory: InventoryType;
     view: 'game' | 'shop';
     setView: (view: 'game' | 'shop') => void;
+    forceSync: () => Promise<boolean>;
     particles: ParticleType[];
     equipped: EquippedType;
     currentGPS: number;
     currentClickPower: number;
-    handleMainClick: (e: React.MouseEvent | React.TouchEvent) => void;
+    handleMainClick: (e: React.MouseEvent | React.TouchEvent | React.PointerEvent) => void;
     buyItem: (item: UpgradeItem) => void;
     buyOrEquipCosmetic: (type: 'skin' | 'bg', item: SkinItem | BackgroundItem) => void;
     unlockedCosmetics: string[];
-    openMysteryBox: (box: MysteryBoxItem) => { type: 'gold' | 'skin' | 'bg' | 'upgrade'; value: number | string; name: string; rarity: Rarity };
+    openMysteryBox: (box: MysteryBoxItem) => Promise<{ type: 'skin' | 'bg' | 'gold' | 'upgrade'; value: number | string; name: string; rarity: Rarity } | null>;
     activateSkill: (itemId: string) => void;
     activeSkills: { [key: string]: number };
     skillCooldowns: { [key: string]: number };
+    comboClicks: number;
+    comboMultiplier: number;
+    claimQuest: (questId: string) => Promise<void>;
+    fetchLeaderboard: () => Promise<LeaderboardData | null>;
+    syncCountdown: number;
+    lastSyncTime: number;
+    isLoading: boolean;
+    userEmail: string | null;
+    userPseudo: string | null;
 }

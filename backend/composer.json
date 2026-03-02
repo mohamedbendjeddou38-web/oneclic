@@ -1,0 +1,13 @@
+{
+    "name": "clickercoin/backend",
+    "description": "Backend API for ClickerCoin to handle game logic and prevent cheating.",
+    "type": "project",
+    "require": {
+        "kreait/firebase-php": "^7.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
+    }
+}
